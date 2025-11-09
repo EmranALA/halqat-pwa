@@ -1,39 +1,245 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إدارة الحلقات القرآنية</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+  <title>حلقاتي - إدارة الحلقات القرآنية</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Cairo Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+    /* Simple fade-in on scroll animation */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
 </head>
-<body>
-  <header>
-    <h1>إدارة الحلقات القرآنية</h1>
-    <p>تطبيق حديث لإدارة الحلقات، تسجيل الطلاب والمعلمين، وتتبع الدروس بسهولة.</p>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md fixed w-full z-50">
+    <div class="container mx-auto flex justify-between items-center p-4">
+      <a href="#" class="flex items-center space-x-2 rtl:space-x-reverse">
+        <!-- شعار -->
+        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C7.589 2 4 5.589 4 10c0 5.25 8 12 8 12s8-6.75 8-12c0-4.411-3.589-8-8-8z"/></svg>
+        <span class="text-xl font-bold text-blue-600">حلقاتي</span>
+      </a>
+      <nav class="hidden md:flex space-x-6 rtl:space-x-reverse font-semibold">
+        <a href="#features" class="hover:text-blue-600">المميزات</a>
+        <a href="#pricing" class="hover:text-blue-600">الأسعار</a>
+        <a href="#faq" class="hover:text-blue-600">الأسئلة الشائعة</a>
+      </nav>
+      <a href="#cta" class="hidden md:inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">ابدأ الآن</a>
+    </div>
   </header>
 
-  <main>
-    <section class="features">
-      <h2>مميزات التطبيق</h2>
-      <ul>
-        <li>إدارة الطلاب والمشرفين والمعلمين</li>
-        <li>تسجيل الدروس والمراجعات</li>
-        <li>متابعة تقدم الطلاب والمستويات</li>
-        <li>واجهة سهلة وجذابة</li>
-      </ul>
-    </section>
+  <!-- Hero Section -->
+  <section class="pt-24 bg-gradient-to-r from-blue-50 to-white">
+    <div class="container mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-8 p-6">
+      <div class="flex-1 fade-in">
+        <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">حوّل إدارة حلقاتك القرآنية إلى تجربة رقمية متكاملة.</h1>
+        <p class="text-lg md:text-xl text-gray-700 mb-6">نظام "حلقاتي" يمنحك الأدوات الذكية لمتابعة طلابك، تنظيم الحلقات، وإصدار التقارير بكل سهولة.</p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="#" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition text-center">جرّب النظام الآن (دخول كزائر)</a>
+          <a href="#" class="bg-white border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center">تثبيت التطبيق على جهازك</a>
+        </div>
+      </div>
+      <div class="flex-1 fade-in">
+        <img src="https://images.unsplash.com/photo-1581091012184-df2b2f2e216b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NjA3fDB8MHwxfHNlYXJjaHwxfHxwcm9ncmFtbWluZyUyMGFwcHxlbnwwfHx8fDE2OTkxNzkyNzB8&ixlib=rb-4.0.3&q=80&w=600" alt="عرض التطبيق على الهاتف والكمبيوتر" class="rounded-xl shadow-lg mx-auto">
+      </div>
+    </div>
+  </section>
 
-    <section class="call-to-action">
-      <h2>ابدأ الآن</h2>
-      <p>قم بتثبيت التطبيق على هاتفك لتجربة إدارة الحلقات بشكل كامل وسهل.</p>
-      <button id="install-btn">تثبيت التطبيق</button>
-    </section>
-  </main>
+  <!-- Features Section -->
+  <section id="features" class="py-16 bg-gray-50">
+    <div class="container mx-auto text-center mb-12 fade-in">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">كل ما تحتاجه لإدارة حلقاتك في مكان واحد.</h2>
+      <p class="text-gray-700 text-lg">أدوات شاملة لإدارة الحلقات، متابعة الطلاب، التقارير، والتحليلات المالية.</p>
+    </div>
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 px-6">
+      <!-- بطاقة ميزة -->
+      <div class="bg-white p-6 rounded-xl shadow-md fade-in">
+        <div class="text-blue-600 mb-4">
+          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 00-8 0v4H5a2 2 0 00-2 2v5h18v-5a2 2 0 00-2-2h-3V7z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-xl mb-2">إدارة شاملة</h3>
+        <p class="text-gray-600 text-sm">صلاحيات متعددة، إدارة سهلة للطلاب والمعلمين، استيراد جماعي للبيانات.</p>
+      </div>
 
-  <footer>
-    <p>© 2025 إدارة الحلقات القرآنية. جميع الحقوق محفوظة.</p>
+      <div class="bg-white p-6 rounded-xl shadow-md fade-in">
+        <div class="text-blue-600 mb-4">
+          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6m2 0H7a2 2 0 01-2-2V7h14v8a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-xl mb-2">متابعة دقيقة</h3>
+        <p class="text-gray-600 text-sm">تسجيل الحضور والغياب، متابعة المحفوظات والمراجعة، نظام نقاط تحفيزي.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-md fade-in">
+        <div class="text-blue-600 mb-4">
+          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6M12 3v4m0 0l-3-3m3 3l3-3"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-xl mb-2">تقارير ذكية</h3>
+        <p class="text-gray-600 text-sm">تقارير أداء شاملة بضغطة زر، تصدير PDF و CSV، لوحات إحصائية جذابة.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-md fade-in">
+        <div class="text-blue-600 mb-4">
+          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-3 0-5 2-5 5s2 5 5 5 5-2 5-5-2-5-5-5z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-xl mb-2">إدارة مالية</h3>
+        <p class="text-gray-600 text-sm">متابعة حالة السداد، تسجيل الدفعات، إرسال رسائل تذكير عبر الواتساب.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-md fade-in">
+        <div class="text-blue-600 mb-4">
+          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-xl mb-2">مرونة وتخصيص</h3>
+        <p class="text-gray-600 text-sm">تخصيص القوائم الجانبية، صلاحيات اطلاع حسب الجنس، واجهة عصرية متجاوبة.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visual Showcase Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto text-center mb-12 fade-in">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">استعرض واجهات التطبيق</h2>
+      <p class="text-gray-700 text-lg">لقطات شاشة احترافية لأهم صفحات التطبيق.</p>
+    </div>
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-6 fade-in">
+      <img src="https://source.unsplash.com/400x300/?dashboard,app" alt="لوحة التحكم" class="rounded-xl shadow-lg">
+      <img src="https://source.unsplash.com/400x300/?students,app" alt="متابعة الطلاب" class="rounded-xl shadow-lg">
+      <img src="https://source.unsplash.com/400x300/?report,app" alt="صفحة التقارير" class="rounded-xl shadow-lg">
+      <img src="https://source.unsplash.com/400x300/?payment,app" alt="صفحة المدفوعات" class="rounded-xl shadow-lg">
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-16 bg-gray-50">
+    <div class="container mx-auto text-center mb-12 fade-in">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">اختر الباقة التي تناسب حجم مؤسستك</h2>
+    </div>
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-6">
+      <div class="bg-white p-6 rounded-xl shadow-md fade-in text-center">
+        <h3 class="text-xl font-bold mb-2">الباقة الأساسية</h3>
+        <p class="text-gray-600 mb-4">99 ريال/شهرياً<br>حتى 50 طالب، 5 معلمين</p>
+        <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">اشترك الآن</a>
+      </div>
+      <div class="bg-blue-600 text-white p-6 rounded-xl shadow-md fade-in text-center transform scale-105">
+        <h3 class="text-xl font-bold mb-2">الباقة المتقدمة</h3>
+        <p class="mb-4">199 ريال/شهرياً<br>حتى 200 طالب، 20 معلم</p>
+        <a href="#" class="bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition">اشترك الآن</a>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-md fade-in text-center">
+        <h3 class="text-xl font-bold mb-2">باقة المؤسسات</h3>
+        <p class="text-gray-600 mb-4">تواصل معنا<br>عدد لا محدود، صلاحيات مخصصة</p>
+        <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">اشترك الآن</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto text-center mb-12 fade-in">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">آراء المستخدمين</h2>
+    </div>
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-6 fade-in">
+      <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+        <p class="text-gray-700 mb-4">"لقد وفّر علينا نظام 'حلقاتي' وقتاً وجهداً كبيراً في إعداد التقارير ومتابعة المعلمين."</p>
+        <h4 class="font-bold">مدير مركز</h4>
+      </div>
+      <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+        <p class="text-gray-700 mb-4">"أصبحت زياراتي الإشرافية أكثر فعالية، وأستطيع متابعة أداء جميع الحلقات من لوحة تحكم واحدة."</p>
+        <h4 class="font-bold">مشرف تربوي</h4>
+      </div>
+      <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+        <p class="text-gray-700 mb-4">"متابعة الطلاب اليومية وإرسال التقارير لأولياء الأمور أصبح أسهل من أي وقت مضى."</p>
+        <h4 class="font-bold">معلم</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-16 bg-gray-50">
+    <div class="container mx-auto text-center mb-12 fade-in">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">أسئلة شائعة</h2>
+    </div>
+    <div class="container mx-auto max-w-3xl px-6 space-y-4 fade-in">
+      <div class="border rounded-lg overflow-hidden">
+        <button class="w-full text-right px-4 py-3 bg-white font-semibold focus:outline-none flex justify-between items-center faq-btn">
+          هل بياناتي آمنة؟
+          <span>+</span>
+        </button>
+        <div class="px-4 py-3 hidden faq-content">
+          نعم، جميع بياناتك مشفرة وتخضع لأعلى معايير الأمان.
+        </div>
+      </div>
+      <div class="border rounded-lg overflow-hidden">
+        <button class="w-full text-right px-4 py-3 bg-white font-semibold focus:outline-none flex justify-between items-center faq-btn">
+          هل يعمل التطبيق بدون إنترنت؟
+          <span>+</span>
+        </button>
+        <div class="px-4 py-3 hidden faq-content">
+          نعم، يمكنك استخدام معظم الوظائف الأساسية بدون اتصال بالإنترنت.
+        </div>
+      </div>
+      <div class="border rounded-lg overflow-hidden">
+        <button class="w-full text-right px-4 py-3 bg-white font-semibold focus:outline-none flex justify-between items-center faq-btn">
+          كيف يمكنني تثبيت التطبيق على هاتفي؟
+          <span>+</span>
+        </button>
+        <div class="px-4 py-3 hidden faq-content">
+          اضغط على زر "تثبيت التطبيق" وسيتم توجيهك لتثبيت PWA مباشرة على هاتفك.
+        </div>
+      </div>
+      <div class="border rounded-lg overflow-hidden">
+        <button class="w-full text-right px-4 py-3 bg-white font-semibold focus:outline-none flex justify-between items-center faq-btn">
+          هل يوجد دعم فني؟
+          <span>+</span>
+        </button>
+        <div class="px-4 py-3 hidden faq-content">
+          نعم، فريقنا متاح لدعمك عبر البريد الإلكتروني والواتساب.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA Section -->
+  <section id="cta" class="py-16 bg-blue-600 text-white text-center fade-in">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">جاهز لتبدأ؟</h2>
+    <p class="mb-6 text-lg md:text-xl">انضم إلى مئات الحلقات التي تستخدم "حلقاتي" لتطوير إدارتها التعليمية.</p>
+    <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">أنشئ حسابك الآن</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-200 py-8">
+    <div class="container mx-auto text-center space-y-4">
+      <div class="flex justify-center gap-6">
+        <a href="#" class="hover:text-white">سياسة الخصوصية</a>
+        <a href="#" class="hover:text-white">شروط الاستخدام</a>
+        <a href="#" class="hover:text-white">تواصل معنا</a>
+      </div>
+      <p class="text-gray-400 text-sm">© 2024 حلقاتي. جميع الحقوق محفوظة.</p>
+    </div>
   </footer>
-</body>
-</html>
+
+  <!-- Scripts -->
+  <script>
+    // Fade-in on scroll
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+    const appearOnScroll = new IntersectionObserver((
