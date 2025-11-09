@@ -1,160 +1,398 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حلقاتي - إدارة الحلقات القرآنية</title>
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>حلقاتي — إدارة الحلقات القرآنية</title>
+
+  <!-- Cairo Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Cairo Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body { font-family: 'Cairo', sans-serif; }
-    /* Simple fade-in animation */
-    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    :root { --header-h: 72px; }
+    html,body { height: 100%; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f8fafc; /* tailwind gray-50 */
+      color: #0f172a; /* tailwind slate-900 */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-top: var(--header-h); /* so fixed header won't cover content */
+    }
+    /* Simple fade-in animation states (works without JS too: default visible with reduced transform) */
+    .fade-in { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ensure images don't overflow */
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* small visual for mobile nav */
+    .nav-open { display: block !important; }
+    .nav-closed { display: none; }
+
+    /* make sure footer links wrap nicely */
+    footer a { white-space: nowrap; }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
+
+  <!-- Noscript fallback -->
+  <noscript>
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 fixed top-20 inset-x-4 z-50 rounded-md">
+      <p class="font-semibold">ملاحظة:</p>
+      <p>الجافاسكربت مُعطّل في متصفحك — قد تفقد بعض التأثيرات التجميلية لكن المحتوى الأساسي ظاهر.</p>
+    </div>
+  </noscript>
 
   <!-- Header -->
-  <header class="bg-white shadow-md fixed w-full z-50">
-    <div class="container mx-auto flex justify-between items-center p-4">
-      <a href="#" class="flex items-center space-x-2 rtl:space-x-reverse">
-        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C7.589 2 4 5.589 4 10c0 5.25 8 12 8 12s8-6.75 8-12c0-4.411-3.589-8-8-8z"/></svg>
-        <span class="text-xl font-bold text-blue-600">حلقاتي</span>
+  <header class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-sm z-40" style="height:var(--header-h);">
+    <div class="max-w-6xl mx-auto h-full flex items-center justify-between px-4">
+      <a href="#" class="flex items-center gap-3">
+        <!-- أيقونة الشعار (هلال + كتاب) -->
+        <svg class="w-9 h-9 text-blue-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <path d="M12 2c-2.761 0-5 1.567-6.279 3.847C8.067 7.045 10.847 8 13.5 8c3.866 0 7-3.134 7-7 0 .5-2.5 3.5-8.5 3.5C12.667 4.5 12 3 12 2z" fill="currentColor"/>
+          <path d="M6 13c0-3.866 3.134-7 7-7 0 0-3 3-3 7s3 7 3 7c-4 0-7-3.134-7-7z" opacity="0.15" fill="currentColor"/>
+        </svg>
+        <span class="text-xl font-extrabold text-slate-900">حلقاتي</span>
       </a>
-      <nav class="hidden md:flex space-x-6 rtl:space-x-reverse font-semibold">
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex items-center gap-8 text-slate-700 font-medium">
         <a href="#features" class="hover:text-blue-600">المميزات</a>
         <a href="#pricing" class="hover:text-blue-600">الأسعار</a>
         <a href="#faq" class="hover:text-blue-600">الأسئلة الشائعة</a>
       </nav>
-      <a href="#cta" class="hidden md:inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">ابدأ الآن</a>
+
+      <div class="flex items-center gap-3">
+        <a href="#cta" class="hidden md:inline-block bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">ابدأ الآن</a>
+
+        <!-- Mobile menu button -->
+        <button id="mobileMenuBtn" aria-label="فتح القائمة" class="md:hidden p-2 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-300">
+          <svg class="w-6 h-6 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile nav panel -->
+    <div id="mobileNav" class="nav-closed md:hidden bg-white/95 border-t shadow-sm">
+      <div class="px-4 py-3 flex flex-col gap-2">
+        <a href="#features" class="py-2">المميزات</a>
+        <a href="#pricing" class="py-2">الأسعار</a>
+        <a href="#faq" class="py-2">الأسئلة الشائعة</a>
+        <a href="#cta" class="py-2 text-center bg-blue-600 text-white rounded-md mt-2">ابدأ الآن</a>
+      </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="pt-24 bg-gradient-to-r from-blue-50 to-white">
-    <div class="container mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-8 p-6">
-      <div class="flex-1 fade-in">
-        <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">حوّل إدارة حلقاتك القرآنية إلى تجربة رقمية متكاملة.</h1>
-        <p class="text-lg md:text-xl text-gray-700 mb-6">نظام "حلقاتي" يمنحك الأدوات الذكية لمتابعة طلابك، تنظيم الحلقات، وإصدار التقارير بكل سهولة.</p>
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a href="#" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition text-center">جرّب النظام الآن (دخول كزائر)</a>
-          <a href="#" class="bg-white border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center">تثبيت التطبيق على جهازك</a>
-        </div>
-      </div>
-      <div class="flex-1 fade-in">
-        <img src="https://source.unsplash.com/600x400/?app,technology" alt="عرض التطبيق" class="rounded-xl shadow-lg mx-auto">
-      </div>
-    </div>
-  </section>
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl mx-auto px-4">
 
-  <!-- Features Section -->
-  <section id="features" class="py-16 bg-gray-50">
-    <div class="container mx-auto text-center mb-12 fade-in">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">كل ما تحتاجه لإدارة حلقاتك في مكان واحد.</h2>
-      <p class="text-gray-700 text-lg">أدوات شاملة لإدارة الحلقات، متابعة الطلاب، التقارير، والتحليلات المالية.</p>
-    </div>
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 px-6">
-      <!-- بطاقة ميزة -->
-      <div class="bg-white p-6 rounded-xl shadow-md fade-in text-center">
-        <div class="text-blue-600 mb-4">
-          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 00-8 0v4H5a2 2 0 00-2 2v5h18v-5a2 2 0 00-2-2h-3V7z"/>
-          </svg>
+    <!-- Hero -->
+    <section class="mt-6 mb-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div class="fade-in visible">
+        <h1 class="text-2xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-4">
+          حوّل إدارة حلقاتك القرآنية إلى تجربة رقمية متكاملة.
+        </h1>
+        <p class="text-slate-700 text-base md:text-lg mb-6">
+          نظام "حلقاتي" يمنحك الأدوات الذكية لمتابعة طلابك، تنظيم الحلقات، وإصدار التقارير بكل سهولة — مناسب للمدراء، المشرفين، المعلمين والمحاسبين.
+        </p>
+        <div class="flex gap-3 flex-col sm:flex-row">
+          <a href="#" class="inline-block bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition text-center">جرّب النظام الآن (دخول كزائر)</a>
+          <a href="#" class="inline-block border border-blue-600 text-blue-600 px-5 py-3 rounded-lg font-semibold hover:bg-blue-50 text-center">تثبيت التطبيق على جهازك</a>
         </div>
-        <h3 class="font-bold text-xl mb-2">إدارة شاملة</h3>
-        <p class="text-gray-600 text-sm">صلاحيات متعددة، إدارة سهلة للطلاب والمعلمين، استيراد جماعي للبيانات.</p>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow-md fade-in text-center">
-        <div class="text-blue-600 mb-4">
-          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6m2 0H7a2 2 0 01-2-2V7h14v8a2 2 0 01-2 2z"/>
-          </svg>
-        </div>
-        <h3 class="font-bold text-xl mb-2">متابعة دقيقة</h3>
-        <p class="text-gray-600 text-sm">تسجيل الحضور والغياب، متابعة المحفوظات والمراجعة، نظام نقاط تحفيزي.</p>
-      </div>
-      <div class="bg-white p-6 rounded-xl shadow-md fade-in text-center">
-        <div class="text-blue-600 mb-4">
-          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6M12 3v4m0 0l-3-3m3 3l3-3"/>
-          </svg>
-        </div>
-        <h3 class="font-bold text-xl mb-2">تقارير ذكية</h3>
-        <p class="text-gray-600 text-sm">تقارير أداء شاملة بضغطة زر، تصدير PDF و CSV، لوحات إحصائية جذابة.</p>
-      </div>
-      <div class="bg-white p-6 rounded-xl shadow-md fade-in text-center">
-        <div class="text-blue-600 mb-4">
-          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-3 0-5 2-5 5s2 5 5 5 5-2 5-5-2-5-5-5z"/>
-          </svg>
-        </div>
-        <h3 class="font-bold text-xl mb-2">إدارة مالية</h3>
-        <p class="text-gray-600 text-sm">متابعة حالة السداد، تسجيل الدفعات، إرسال رسائل تذكير عبر الواتساب.</p>
-      </div>
-      <div class="bg-white p-6 rounded-xl shadow-md fade-in text-center">
-        <div class="text-blue-600 mb-4">
-          <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/>
-          </svg>
-        </div>
-        <h3 class="font-bold text-xl mb-2">مرونة وتخصيص</h3>
-        <p class="text-gray-600 text-sm">تخصيص القوائم الجانبية، صلاحيات اطلاع حسب الجنس، واجهة عصرية متجاوبة.</p>
-      </div>
-    </div>
-  </section>
 
-  <!-- FAQ Section Example for Accordion -->
-  <section id="faq" class="py-16 bg-gray-50">
-    <div class="container mx-auto text-center mb-12 fade-in">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">أسئلة شائعة</h2>
-    </div>
-    <div class="container mx-auto max-w-3xl px-6 space-y-4 fade-in">
-      <div class="border rounded-lg overflow-hidden">
-        <button class="w-full text-right px-4 py-3 bg-white font-semibold focus:outline-none flex justify-between items-center faq-btn">
-          هل بياناتي آمنة؟
-          <span>+</span>
-        </button>
-        <div class="px-4 py-3 hidden faq-content">نعم، جميع بياناتك مشفرة وتخضع لأعلى معايير الأمان.</div>
+      <div class="fade-in visible">
+        <!-- Mockup image: ثابتة وذات طابع تقني -->
+        <div class="rounded-2xl overflow-hidden shadow-lg bg-white">
+          <img src="https://images.unsplash.com/photo-1531497865144-046f33f1a1c4?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b3e7a9a3e3a0d6a6c2b1b3a4f4b8c2c" alt="عرض التطبيق — لوحة تحكم وهاتف" class="w-full h-64 object-cover">
+          <div class="p-4">
+            <p class="text-sm text-slate-600">واجهة تطبيق "حلقاتي" — لوحة تحكم مرنة ومتجاوبة لإدارة الحلقات والطلاب.</p>
+          </div>
+        </div>
       </div>
-      <div class="border rounded-lg overflow-hidden">
-        <button class="w-full text-right px-4 py-3 bg-white font-semibold focus:outline-none flex justify-between items-center faq-btn">
-          هل يعمل التطبيق بدون إنترنت؟
-          <span>+</span>
-        </button>
-        <div class="px-4 py-3 hidden faq-content">نعم، يمكنك استخدام معظم الوظائف الأساسية بدون اتصال بالإنترنت.</div>
-      </div>
-    </div>
-  </section>
+    </section>
 
+    <!-- Features -->
+    <section id="features" class="py-8">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold mb-2">كل ما تحتاجه لإدارة حلقاتك في مكان واحد.</h2>
+        <p class="text-slate-600">أدوات شاملة لإدارة الحلقات، متابعة الطلاب، التقارير، والتحليلات المالية.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <!-- Card 1 -->
+        <article class="bg-white p-5 rounded-xl shadow-sm fade-in visible">
+          <div class="flex items-center justify-center mb-3">
+            <!-- users icon -->
+            <svg class="w-10 h-10 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11c1.657 0 3-1.343 3-3S17.657 5 16 5s-3 1.343-3 3 1.343 3 3 3zM8 11c1.657 0 3-1.343 3-3S9.657 5 8 5 5 6.343 5 8s1.343 3 3 3zM21 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-lg mb-1 text-center">إدارة شاملة</h3>
+          <p class="text-sm text-slate-600 text-center">صلاحيات متعددة، إدارة سهلة للطلاب والمعلمين، استيراد جماعي للبيانات.</p>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="bg-white p-5 rounded-xl shadow-sm fade-in visible">
+          <div class="flex items-center justify-center mb-3">
+            <!-- tracking icon -->
+            <svg class="w-10 h-10 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-lg mb-1 text-center">متابعة دقيقة</h3>
+          <p class="text-sm text-slate-600 text-center">تسجيل الحضور والغياب، متابعة المحفوظات ونظام نقاط تحفيزي.</p>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="bg-white p-5 rounded-xl shadow-sm fade-in visible">
+          <div class="flex items-center justify-center mb-3">
+            <!-- reports icon -->
+            <svg class="w-10 h-10 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6M12 3v4M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-lg mb-1 text-center">تقارير ذكية</h3>
+          <p class="text-sm text-slate-600 text-center">تقارير أداء، تصدير PDF/CSV، ولوحات إحصائية بصرية.</p>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="bg-white p-5 rounded-xl shadow-sm fade-in visible">
+          <div class="flex items-center justify-center mb-3">
+            <!-- finance icon -->
+            <svg class="w-10 h-10 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-3 0-5 2-5 5s2 5 5 5 5-2 5-5-2-5-5-5zM12 3v5"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-lg mb-1 text-center">إدارة مالية</h3>
+          <p class="text-sm text-slate-600 text-center">متابعة المدفوعات، تسجيل الدفعات وإرسال تذكير عبر واتساب.</p>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="bg-white p-5 rounded-xl shadow-sm fade-in visible">
+          <div class="flex items-center justify-center mb-3">
+            <!-- customize icon -->
+            <svg class="w-10 h-10 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-lg mb-1 text-center">مرونة وتخصيص</h3>
+          <p class="text-sm text-slate-600 text-center">تخصيص القوائم، صلاحيات حسب الدور، واجهة عصرية متجاوبة.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Visual Gallery -->
+    <section class="py-8">
+      <div class="text-center mb-6">
+        <h3 class="text-xl font-bold">استعرض واجهات التطبيق</h3>
+        <p class="text-slate-600">لقطات شاشة للوحة التحكم، متابعة الطلاب، التقارير والمدفوعات.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <figure class="bg-white rounded-xl overflow-hidden shadow-sm">
+          <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b4d7b9b6d8ef6a6c2b7f9e1b3f9e3a1" alt="لوحة تحكم">
+          <figcaption class="p-3 text-sm text-slate-600">لوحة تحكم</figcaption>
+        </figure>
+        <figure class="bg-white rounded-xl overflow-hidden shadow-sm">
+          <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=9c7b3a5b6b8c4f2a3e7e3a3b6e7b3c1" alt="متابعة الطلاب">
+          <figcaption class="p-3 text-sm text-slate-600">متابعة الطلاب</figcaption>
+        </figure>
+        <figure class="bg-white rounded-xl overflow-hidden shadow-sm">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=3d6b2b4f1a1b5b6c9d4f1d2e2c4b5a7" alt="التقارير">
+          <figcaption class="p-3 text-sm text-slate-600">التقارير</figcaption>
+        </figure>
+        <figure class="bg-white rounded-xl overflow-hidden shadow-sm">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=3d6b2b4f1a1b5b6c9d4f1d2e2c4b5a7" alt="المدفوعات">
+          <figcaption class="p-3 text-sm text-slate-600">المدفوعات</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-8">
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-bold">اختر الباقة التي تناسب حجم مؤسستك</h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+          <h4 class="text-lg font-semibold mb-2">الباقة الأساسية</h4>
+          <p class="text-slate-600 mb-4">99 ريال/شهرياً — حتى 50 طالب، 5 معلمين</p>
+          <a href="#" class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition">اشترك الآن</a>
+        </div>
+
+        <div class="bg-gradient-to-tr from-blue-600 to-indigo-600 text-white p-6 rounded-xl shadow-lg text-center transform scale-100 md:scale-105">
+          <h4 class="text-lg font-semibold mb-2">الباقة المتقدمة</h4>
+          <p class="mb-4">199 ريال/شهرياً — حتى 200 طالب، 20 معلم</p>
+          <a href="#" class="inline-block bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition">اشترك الآن</a>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+          <h4 class="text-lg font-semibold mb-2">باقة المؤسسات</h4>
+          <p class="text-slate-600 mb-4">تواصل معنا — عدد لا محدود وصلاحيات مخصصة</p>
+          <a href="#" class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition">اشترك الآن</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-8">
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-bold">آراء المستخدمين</h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <blockquote class="bg-white p-6 rounded-xl shadow-sm">
+          <p class="text-slate-700 mb-4">"لقد وفّر علينا نظام 'حلقاتي' وقتاً وجهداً كبيراً في إعداد التقارير ومتابعة المعلمين."</p>
+          <footer class="font-semibold">— مدير مركز</footer>
+        </blockquote>
+
+        <blockquote class="bg-white p-6 rounded-xl shadow-sm">
+          <p class="text-slate-700 mb-4">"أصبحت زياراتي الإشرافية أكثر فعالية، وأستطيع متابعة أداء جميع الحلقات من لوحة تحكم واحدة."</p>
+          <footer class="font-semibold">— مشرف تربوي</footer>
+        </blockquote>
+
+        <blockquote class="bg-white p-6 rounded-xl shadow-sm">
+          <p class="text-slate-700 mb-4">"متابعة الطلاب اليومية وإرسال التقارير لأولياء الأمور أصبح أسهل من أي وقت مضى."</p>
+          <footer class="font-semibold">— معلم</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-8">
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-bold">أسئلة شائعة</h3>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-3">
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+          <button class="w-full text-right px-4 py-3 flex justify-between items-center faq-btn font-medium">
+            <span>هل بياناتي آمنة؟</span>
+            <span class="faq-sign">+</span>
+          </button>
+          <div class="px-4 py-3 faq-content hidden text-slate-600">
+            نعم، جميع بياناتك مشفرة وتخضع لممارسات أمان حديثة ويمكنك طلب سياسة الأمان التفصيلية.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+          <button class="w-full text-right px-4 py-3 flex justify-between items-center faq-btn font-medium">
+            <span>هل يعمل التطبيق بدون إنترنت؟</span>
+            <span class="faq-sign">+</span>
+          </button>
+          <div class="px-4 py-3 faq-content hidden text-slate-600">
+            نعم، يدعم التطبيق وظائف أساسية في وضع عدم الاتصال (PWA) مع مزامنة عند العودة للاتصال.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+          <button class="w-full text-right px-4 py-3 flex justify-between items-center faq-btn font-medium">
+            <span>كيف يمكنني تثبيت التطبيق على هاتفي؟</span>
+            <span class="faq-sign">+</span>
+          </button>
+          <div class="px-4 py-3 faq-content hidden text-slate-600">
+            اضغط زر "تثبيت التطبيق" وسيتم توجيهك لإضافة PWA إلى الشاشة الرئيسية أو تحميل التطبيق من المتجر إن وُفر.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+          <button class="w-full text-right px-4 py-3 flex justify-between items-center faq-btn font-medium">
+            <span>هل يوجد دعم فني؟</span>
+            <span class="faq-sign">+</span>
+          </button>
+          <div class="px-4 py-3 faq-content hidden text-slate-600">
+            نعم، فريق الدعم متوفر عبر البريد والواتساب وممكن تقديم باقات دعم مخصصة للمؤسسات.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section id="cta" class="py-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl mt-6">
+      <div class="max-w-3xl mx-auto text-center">
+        <h3 class="text-2xl font-bold mb-3">جاهز لتبدأ؟</h3>
+        <p class="mb-6">انضم إلى مئات الحلقات التي تستخدم "حلقاتي" لتطوير إدارتها التعليمية.</p>
+        <a href="#" class="inline-block bg-white text-blue-600 px-6 py-3 rounded-md font-semibold hover:opacity-95 transition">أنشئ حسابك الآن</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-10 pb-8">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex flex-col md:flex-row md:justify-between items-center gap-4">
+        <div class="flex gap-4 items-center">
+          <a href="#" class="text-slate-600 hover:text-slate-900">سياسة الخصوصية</a>
+          <a href="#" class="text-slate-600 hover:text-slate-900">شروط الاستخدام</a>
+          <a href="#" class="text-slate-600 hover:text-slate-900">تواصل معنا</a>
+        </div>
+        <div class="text-slate-500 text-sm">© 2024 حلقاتي. جميع الحقوق محفوظة.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts: kept small and robust (no errors that stop page rendering) -->
   <script>
-    // Fade-in on scroll
-    const faders = document.querySelectorAll('.fade-in');
-    const appearOptions = { threshold: 0.1 };
-    const appearOnScroll = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, appearOptions);
-    faders.forEach(fader => appearOnScroll.observe(fader));
+    (function () {
+      // Mobile nav toggle (simple and safe)
+      const btn = document.getElementById('mobileMenuBtn');
+      const mobileNav = document.getElementById('mobileNav');
+      if (btn && mobileNav) {
+        btn.addEventListener('click', () => {
+          const isOpen = mobileNav.classList.contains('nav-open');
+          mobileNav.classList.toggle('nav-open', !isOpen);
+          mobileNav.classList.toggle('nav-closed', isOpen);
+        });
+      }
 
-    // FAQ Accordion
-    const faqBtns = document.querySelectorAll('.faq-btn');
-    faqBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const content = btn.nextElementSibling;
-        content.classList.toggle('hidden');
-        btn.querySelector('span').textContent = content.classList.contains('hidden') ? '+' : '-';
+      // Simple fade-in: if IntersectionObserver available use it, otherwise show all
+      const faders = document.querySelectorAll('.fade-in');
+      if ('IntersectionObserver' in window) {
+        try {
+          const obs = new IntersectionObserver((entries, observer) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.12 });
+          faders.forEach(el => obs.observe(el));
+        } catch (e) {
+          // on any error, reveal all so content is visible
+          faders.forEach(el => el.classList.add('visible'));
+        }
+      } else {
+        faders.forEach(el => el.classList.add('visible'));
+      }
+
+      // FAQ accordion
+      const faqBtns = document.querySelectorAll('.faq-btn');
+      faqBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const content = btn.nextElementSibling;
+          if (!content) return;
+          const isHidden = content.classList.contains('hidden');
+          // close other open items (optional): keep simple — do not auto-close others
+          content.classList.toggle('hidden', !isHidden ? true : false); // toggle
+          // toggle sign
+          const sign = btn.querySelector('.faq-sign');
+          if (sign) sign.textContent = isHidden ? '−' : '+';
+        });
       });
-    });
+
+      // defensive: ensure at least main text is visible (in case CSS or JS fails)
+      // No-op: DOM already contains text nodes visible by default.
+    })();
   </script>
 
 </body>
