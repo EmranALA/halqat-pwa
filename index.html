@@ -4,58 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>إدارة الحلقات القرآنية</title>
-
-  <!-- Manifest -->
   <link rel="manifest" href="manifest.json">
-
-  <!-- Theme color -->
-  <meta name="theme-color" content="#0369a1">
-
-  <!-- Styles -->
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      background-color: #f1f5f9;
-      color: #0369a1;
-      padding: 50px;
-    }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-    }
-    p {
-      font-size: 1.2em;
-      max-width: 700px;
-      margin: auto;
-      line-height: 1.6em;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 15px 30px;
-      background-color: #0369a1;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 10px;
-      font-size: 1em;
-      transition: background-color 0.3s;
-    }
-    .btn:hover {
-      background-color: #02497c;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
 </head>
 <body>
+  <header>
+    <h1>إدارة الحلقات القرآنية</h1>
+    <p>تطبيق حديث لإدارة الحلقات، تسجيل الطلاب والمعلمين، وتتبع الدروس بسهولة.</p>
+  </header>
 
-  <h1>مرحبًا بكم في إدارة الحلقات القرآنية</h1>
-  
-  <p>
-    هذا التطبيق يساعدكم على إدارة الحلقات القرآنية بسهولة وفعالية. 
-    يمكنكم تسجيل الطلاب والمشرفين والمعلمين، تتبع الدروس، تنظيم الحلقات، ومراقبة تقدم الطلاب، كل ذلك في مكان واحد مع واجهة سهلة الاستخدام.
-  </p>
+  <main>
+    <section class="features">
+      <h2>مميزات التطبيق</h2>
+      <ul>
+        <li>إدارة الطلاب والمشرفين والمعلمين</li>
+        <li>تسجيل الدروس والمراجعات</li>
+        <li>متابعة تقدم الطلاب والمستويات</li>
+        <li>واجهة سهلة وجذابة</li>
+      </ul>
+    </section>
 
-  <a href="https://emranala.github.io/halqat-pwa/" class="btn">ابدأ الآن</a>
+    <section class="call-to-action">
+      <h2>ابدأ الآن</h2>
+      <p>قم بتثبيت التطبيق على هاتفك لتجربة إدارة الحلقات بشكل كامل وسهل.</p>
+      <button id="install-btn">تثبيت التطبيق</button>
+    </section>
+  </main>
 
+  <footer>
+    <p>© 2025 إدارة الحلقات القرآنية. جميع الحقوق محفوظة.</p>
+  </footer>
 </body>
 </html>
